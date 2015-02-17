@@ -9,5 +9,5 @@ install:
 
 script:
   - export OPENCV_PATH=/usr/local
-  - qmake hulkinizer.pro
+  - qmake -r hulkinizer_all.pro
   - make

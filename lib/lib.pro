@@ -19,7 +19,12 @@ message (Using OpenCV library in: $${OPENCV_ROOT})
 HEADERS += \
     hulkinizer.h \
     mysqldatabase.hpp \
-    nulldefs.h
+    nulldefs.h \
+    face_detector.h \
+    head_and_shoulder_detector.h
 
 SOURCES += \
-    hulkinizer.cpp
+    hulkinizer.cpp \
+    face_detector.cpp \
+    detectors_factory.cpp \
+    head_and_shoulder_detector.cpp

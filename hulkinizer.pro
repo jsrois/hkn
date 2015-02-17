@@ -16,7 +16,9 @@ SOURCES += main.cpp \
     hulkinizer.cpp
 
 HEADERS += \
-    hulkinizer.h
+    hulkinizer.h \
+    nulldefs.h \
+    mysqldatabase.hpp
 
 
 

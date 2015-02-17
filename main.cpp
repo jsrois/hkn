@@ -14,7 +14,7 @@ int main()
 //    CascadeClassifier
 //            clasif("data/haarcascade_frontalface_alt2.xml");
 
-    HULKINIZER myHulk;
+    HULKINIZER myHulk(0);
 
     while (1)
     {
@@ -47,7 +47,16 @@ int main()
 //            rectangle(myImage,detecciones_vector[i],CV_RGB(255,0,0));
 
         Mat result = myHulk.run(myImage,HULKINIZER::Hulk);
+
+        if (myHulk.CLASSIFY_SVM(result)<0.5)
+            putText(result,"Male",Point(20,20),1,1.0,CV_RGB(255,255,255));
+
+
+
         cout << "aaa" << endl;
+
+
+
 
         imshow("frame",result);
         char k = waitKey(10);

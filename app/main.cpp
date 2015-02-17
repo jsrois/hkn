@@ -4,7 +4,7 @@
 using namespace std;
 using namespace cv;
 
-#include "hulkinizer.h"
+#include <hulkinizer.h>
 
 int main()
 {

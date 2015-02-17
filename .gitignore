@@ -4,4 +4,5 @@
 *.pro.user
 *.moc
 *moc_*
+build
 hulkinizer

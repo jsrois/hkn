@@ -2,6 +2,9 @@
 #include "face_detector.h"
 #include "head_and_shoulder_detector.h"
 
+namespace hulkinizer
+{
+
 Detector * Detector::create(int detectorType)
 {
     switch (detectorType)
@@ -22,4 +25,5 @@ Detector * Detector::create(int detectorType)
 
     }
 
+}
 }

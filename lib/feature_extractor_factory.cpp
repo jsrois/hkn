@@ -1,6 +1,6 @@
 #include "hulkinizer.h"
 
-class HulkExtractor : public FeatureExtractor
+class HulkExtractor : public hulkinizer::FeatureExtractor
 {
 public:
     void run(const Mat & input, vector<Rect> roiVector , Mat& output)
@@ -16,7 +16,7 @@ public:
     }
 };
 
-class HellBoyExtractor : public FeatureExtractor
+class HellBoyExtractor : public hulkinizer::FeatureExtractor
 {
 public:
     void run(const Mat & input, vector<Rect> roiVector , Mat& output)
@@ -32,7 +32,7 @@ public:
     }
 };
 
-class ManhattanExtractor : public FeatureExtractor
+class ManhattanExtractor : public hulkinizer::FeatureExtractor
 {
 public:
     void run(const Mat & input, vector<Rect> roiVector , Mat& output)
@@ -48,7 +48,7 @@ public:
     }
 };
 
-class XYZExtractor : public FeatureExtractor
+class XYZExtractor : public hulkinizer::FeatureExtractor
 {
 public:
     void run(const Mat & input, vector<Rect> roiVector , Mat& output)
@@ -63,6 +63,8 @@ public:
     }
 };
 
+namespace hulkinizer
+{
 FeatureExtractor * FeatureExtractor::create(int featureType)
 {
     switch (featureType)
@@ -89,4 +91,5 @@ FeatureExtractor * FeatureExtractor::create(int featureType)
     }
 
     }
+}
 }

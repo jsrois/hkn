@@ -5,6 +5,7 @@ using namespace std;
 using namespace cv;
 
 #include <hulkinizer.h>
+using namespace hulkinizer;
 
 int main()
 {

@@ -2,7 +2,7 @@
 #define FACEDETECTOR_H
 #include "hulkinizer.h"
 
-class FaceDetector : public Detector
+class FaceDetector : public hulkinizer::Detector
 {
     CascadeClassifier * _classifier;
 public:

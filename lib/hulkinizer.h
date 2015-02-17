@@ -6,6 +6,9 @@
 using namespace cv;
 using namespace std;
 
+namespace hulkinizer
+{
+
 class Detector
 {
 public:
@@ -47,5 +50,5 @@ public:
     Mat run(Mat image);
     float classifySVM(Mat image);
 };
-
+} // namespace
 #endif // HULKINIZER_H

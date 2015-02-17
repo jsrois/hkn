@@ -6,6 +6,8 @@ using namespace std;
 
 #define THRESHOLD 0.5
 
+namespace hulkinizer
+{
 Hulkinizer::Hulkinizer(int detectorType, int featureType)
 {
     _detector = Detector::create(detectorType);
@@ -53,3 +55,4 @@ float Hulkinizer::classifySVM(Mat image)
     return returnedValue;
 }
 
+} // namespace

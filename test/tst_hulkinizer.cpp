@@ -4,6 +4,7 @@
 #include "qtest_opencv_helpers.hpp"
 using namespace std;
 using namespace cv;
+using namespace hulkinizer;
 
 class hulkinizer_test : public QObject
 {

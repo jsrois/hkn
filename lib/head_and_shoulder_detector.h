@@ -3,7 +3,7 @@
 #include "hulkinizer.h"
 
 
-class HeadAndShoulderDetector : public Detector
+class HeadAndShoulderDetector : public hulkinizer::Detector
 {
     CascadeClassifier *_classifier;
 public:

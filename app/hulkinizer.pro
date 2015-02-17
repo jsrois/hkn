@@ -8,6 +8,7 @@ QMAKE_MACOSX_DEPLOYMENT_TARGET = 10.9
 INCLUDEPATH += $${PWD}/../lib
 LIBS += -L$${PWD}/../build -lhulkinizer
 QMAKE_RPATHDIR += $${PWD}/../build
+DEPENDPATH += $${PWD}/../lib
 
 
 OPENCV_ROOT = $$(OPENCV_PATH)

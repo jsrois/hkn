@@ -62,6 +62,7 @@ Mat HULKINIZER::run(Mat image, int TYPE)
             face = 2*face;
             cout << "aaa" << endl;
         }
+        cout << "before" << endl;
         merge(canalesIm,image);
 
     }

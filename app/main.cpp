@@ -16,6 +16,8 @@ int main()
 
     HULKINIZER myHulk(0);
 
+
+
     while (1)
     {
         Mat myImage,greyimage,rgb;

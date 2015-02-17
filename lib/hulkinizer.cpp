@@ -11,10 +11,11 @@ namespace hulkinizer
 {
 Hulkinizer::Hulkinizer(int detectorType, int featureType)
 {
-    _detector = Detector::create(detectorType);
-    _detector->init();
+    _pimpl = new Hulkinizer::PImpl;
+    _pimpl->_detector = Detector::create(detectorType);
+    _pimpl->_detector->init();
 
-    _featExtraction = FeatureExtractor::create(featureType);
+    _pimpl->_featExtraction = FeatureExtractor::create(featureType);
 }
 
 Hulkinizer::~Hulkinizer()
@@ -24,20 +25,20 @@ Hulkinizer::~Hulkinizer()
 
 Mat Hulkinizer::run(Mat image)
 {
-    _detector->run(image,_detectionVector);
+    _pimpl->_detector->run(image,_pimpl->_detectionVector);
 
     Mat processedImage;
 
-    _featExtraction->run(image,_detectionVector,processedImage);
+    _pimpl->_featExtraction->run(image,_pimpl->_detectionVector,processedImage);
 
     classifySVM(processedImage);
 
-    addDetections(processedImage);
+    _pimpl->addDetections(processedImage);
 
     return processedImage;
 }
 
-void Hulkinizer::addDetections(Mat &im)
+void Hulkinizer::PImpl::addDetections(Mat &im)
 {
     for (int i=0;i<_detectionVector.size();i++)
         rectangle(im,_detectionVector[i],CV_RGB(255,0,0));
@@ -46,7 +47,7 @@ void Hulkinizer::addDetections(Mat &im)
 float Hulkinizer::classifySVM(Mat image)
 {
     float returnedValue = 0;
-    for (int i=0;i<_detectionVector.size();i++)
+    for (int i=0;i<_pimpl->_detectionVector.size();i++)
     {
       doStuffWithImage(image(_detectionVector[i]));
       /*fake score*/

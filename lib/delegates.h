@@ -1,8 +1,21 @@
 #ifndef DELEGATES_H
 #define DELEGATES_H
-
+#include "hulkinizer.h"
+#include <opencv2/opencv.hpp>
+using namespace cv;
 namespace hulkinizer
 {
+
+
+class Hulkinizer::PImpl
+{
+public:
+    class Detector *               _detector;
+    class FeatureExtractor*  _featExtraction;
+    std::vector<Rect> _detectionVector;
+    void addDetections(Mat& im);
+};
+
 class Detector
 {
 public:

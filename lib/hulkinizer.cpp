@@ -34,58 +34,6 @@ Mat Hulkinizer::run(Mat image)
     return processedImage;
 }
 
-
-
-void Hulkinizer::hulkFeatureExtraction(const Mat &input, Mat &output)
-{
-    vector<Mat> imageChannels;
-    split(input,imageChannels);
-    for (int i=0;i<_detectionVector.size();i++)
-    {
-        Mat face = imageChannels[1](_detectionVector[i]);
-        face = 2*face;
-    }
-    merge(imageChannels,output);
-}
-
-void Hulkinizer::hellboyFeatureExtraction(const Mat &input, Mat &output)
-{
-    vector<Mat> imageChannels;
-    split(input,imageChannels);
-    for (int i=0;i<_detectionVector.size();i++)
-    {
-        Mat face = imageChannels[2](_detectionVector[i]);
-        face = 2*face;
-    }
-    merge(imageChannels,output);
-}
-
-void Hulkinizer::manhattanFeatureExtraction(const Mat &input, Mat &output)
-{
-    vector<Mat> imageChannels;
-    split(input,imageChannels);
-    for (int i=0;i<_detectionVector.size();i++)
-    {
-        Mat face = imageChannels[0](_detectionVector[i]);
-        face = 2*face;
-    }
-    merge(imageChannels,output);
-}
-
-void Hulkinizer::xyzFeatureExtraction(const Mat &input, Mat &output)
-{
-    output = input.clone();
-    Mat hsvImage;
-    cvtColor(input,hsvImage,CV_BGR2HSV);
-    for (int i=0;i<_detectionVector.size();i++)
-    {
-        output(_detectionVector[i]) = 1.0*hsvImage(_detectionVector[i]);
-
-        if (this->classifySVM(output(_detectionVector[i]))<THRESHOLD)
-            MySQLDatabase::addImageToDatabase(output);
-    }
-}
-
 void Hulkinizer::addDetections(Mat &im)
 {
     for (int i=0;i<_detectionVector.size();i++)

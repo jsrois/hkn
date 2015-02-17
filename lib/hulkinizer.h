@@ -37,10 +37,6 @@ class Hulkinizer
     std::vector<Rect> _detectionVector;
 
 protected:
-    void hulkFeatureExtraction(const Mat& input, Mat& output);
-    void hellboyFeatureExtraction(const Mat& input, Mat& output);
-    void manhattanFeatureExtraction(const Mat& input, Mat& output);
-    void xyzFeatureExtraction(const Mat& input, Mat& output);
     void addDetections(Mat& im);
 public:
 

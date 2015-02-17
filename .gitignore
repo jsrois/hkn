@@ -1,0 +1,7 @@
+*.o
+*~
+*Makefile*
+*.pro.user
+*.moc
+*moc_*
+hulkinizer

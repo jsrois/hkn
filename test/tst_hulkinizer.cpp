@@ -5,7 +5,6 @@
 using namespace std;
 using namespace cv;
 
-
 class hulkinizer_test : public QObject
 {
     Q_OBJECT
@@ -34,11 +33,12 @@ void hulkinizer_test::characterizationTest_data()
     QTest::addColumn<QString>("groundTruthImageName");
 
     // add fixtures
-    QTest::newRow("test1") << "data/sampleImage.png" << int(HULKINIZER::Hulk) << "data/gt_hulk.bmp";
-    QTest::newRow("test2") << "data/sampleImage.png" << int(HULKINIZER::HellBoy) << "data/gt_hellboy.bmp";
-    QTest::newRow("test3") << "data/sampleImage.png" << int(HULKINIZER::DrManhattan) << "data/gt_manhattan.bmp";
-    QTest::newRow("test4") << "data/sampleImage.png" << int(HULKINIZER::XYZfeatures) << "data/gt_xyz.bmp";
+    QTest::newRow("test1") << "data/sampleImage.png" << int(Hulkinizer::Hulk) << "data/gt_hulk.bmp";
+    QTest::newRow("test2") << "data/sampleImage.png" << int(Hulkinizer::HellBoy) << "data/gt_hellboy.bmp";
+    QTest::newRow("test3") << "data/sampleImage.png" << int(Hulkinizer::DrManhattan) << "data/gt_manhattan.bmp";
+    QTest::newRow("test4") << "data/sampleImage.png" << int(Hulkinizer::XYZfeatures) << "data/gt_xyz.bmp";
 }
+
    #include <QDebug>
 void hulkinizer_test::characterizationTest()
 {
@@ -49,9 +49,10 @@ void hulkinizer_test::characterizationTest()
     Mat inputImage          = imread(inputImageName.toStdString().c_str());
     Mat groundTruthImage    = imread(groundTruthImageName.toStdString().c_str());
 
-    HULKINIZER hulk(1);
+    Hulkinizer hulk(1);
 
     Mat result = hulk.run(inputImage,featureType);
+
 
     CheckMatricesAreEqual(result,groundTruthImage);
 }

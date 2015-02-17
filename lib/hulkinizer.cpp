@@ -6,129 +6,111 @@ using namespace std;
 
 #define THRESHOLD 0.5
 
-HULKINIZER::HULKINIZER(int FD)
+Hulkinizer::Hulkinizer(int doFaceDetection)
 {
-    this->FD = FD;
-    if (FD == 1)
+    this->_doFaceDetection = doFaceDetection;
+    if (doFaceDetection == 1)
     {
-    clasif = new CascadeClassifier("data/haarcascade_frontalface_alt2.xml");
+    _classifier = new CascadeClassifier("data/haarcascade_frontalface_alt2.xml");
     }
     else
     {
-        clasif = new CascadeClassifier("data/haarcascade_mcs_upperbody.xml");
+        _classifier = new CascadeClassifier("data/haarcascade_mcs_upperbody.xml");
     }
 
 }
 
-HULKINIZER::~HULKINIZER()
+Hulkinizer::~Hulkinizer()
 {
-    delete clasif;
+    delete _classifier;
 }
 
-
-
-
-Mat HULKINIZER::run(Mat image, int TYPE)
+Mat Hulkinizer::run(Mat image, int featureType)
 {
-    if (FD == 1)
+    if (_doFaceDetection == 1)
     {
-        Size minimo = Size(30,30);
-        Size maximo = Size(200,200);
-        clasif->detectMultiScale(image,vector_detecciones,1.1, 3, CV_HAAR_FIND_BIGGEST_OBJECT, minimo, maximo);
+        Size minimumSize = Size(30,30);
+        Size maximumSize = Size(200,200);
+        _classifier->detectMultiScale(image,_detectionVector,1.1, 3, CV_HAAR_FIND_BIGGEST_OBJECT, minimumSize, maximumSize);
     }
     else
     {
-        Size minimo = Size(80,80);
-        Size maximo = Size(200,200);
-        clasif->detectMultiScale(image,vector_detecciones,1.1, 3, CV_HAAR_FIND_BIGGEST_OBJECT, minimo, maximo);
+        Size minimumSize = Size(80,80);
+        Size maximumSize = Size(200,200);
+        _classifier->detectMultiScale(image,_detectionVector,1.1, 3, CV_HAAR_FIND_BIGGEST_OBJECT, minimumSize, maximumSize);
     }
 
-    //        for (int i=0;i<detecciones_vector.size();i++)
-    //        {
-    //            vector<Mat> canalesIm;
-    //            split(myImage,canalesIm);
-    //            canalesIm[1](detecciones_vector[i]) = 2*canalesIm[1](detecciones_vector[i]);
-    //        }
-
-
-    cout << "llego aquí" << endl;
-    if (TYPE == Hulk)
+    if (featureType == Hulk)
     {
-        vector<Mat> canalesIm;
-        split(image,canalesIm);
-        for (int i=0;i<vector_detecciones.size();i++)
+        vector<Mat> imageChannels;
+        split(image,imageChannels);
+        for (int i=0;i<_detectionVector.size();i++)
         {
-            Mat face = canalesIm[1](vector_detecciones[i]);
-            face = 2*face;
-            cout << "aaa" << endl;
-        }
-        cout << "before" << endl;
-        merge(canalesIm,image);
-
-    }
-    else if (TYPE == DrManhattan)
-    {
-        vector<Mat> canalesIm;
-        split(image,canalesIm);
-        for (int i=0;i<vector_detecciones.size();i++)
-        {
-            Mat face = canalesIm[0](vector_detecciones[i]);
+            Mat face = imageChannels[1](_detectionVector[i]);
             face = 2*face;
         }
-        merge(canalesIm,image);
+        merge(imageChannels,image);
 
     }
-    else if (TYPE == HellBoy)
+    else if (featureType == DrManhattan)
     {
-        vector<Mat> canalesIm;
-        split(image,canalesIm);
-        for (int i=0;i<vector_detecciones.size();i++)
+        vector<Mat> imageChannels;
+        split(image,imageChannels);
+        for (int i=0;i<_detectionVector.size();i++)
         {
-            Mat face = canalesIm[2](vector_detecciones[i]);
+            Mat face = imageChannels[0](_detectionVector[i]);
             face = 2*face;
         }
-        merge(canalesIm,image);
+        merge(imageChannels,image);
 
     }
-    else if (TYPE == XYZfeatures)
+    else if (featureType == HellBoy)
+    {
+        vector<Mat> imageChannels;
+        split(image,imageChannels);
+        for (int i=0;i<_detectionVector.size();i++)
+        {
+            Mat face = imageChannels[2](_detectionVector[i]);
+            face = 2*face;
+        }
+        merge(imageChannels,image);
+
+    }
+    else if (featureType == XYZfeatures)
     {
         Mat hsvImage;
         cvtColor(image,hsvImage,CV_BGR2HSV);
-        for (int i=0;i<vector_detecciones.size();i++)
+        for (int i=0;i<_detectionVector.size();i++)
         {
-            image(vector_detecciones[i]) = 1.0*hsvImage(vector_detecciones[i]);
+            image(_detectionVector[i]) = 1.0*hsvImage(_detectionVector[i]);
 
-            if (this->CLASSIFY_SVM(image(vector_detecciones[i]))<THRESHOLD)
+            if (this->classifySVM(image(_detectionVector[i]))<THRESHOLD)
                 MySQLDatabase::addImageToDatabase(image);
         }
 
     }
-
-    //    for (int i=0;i<detecciones_vector.size();i++)
-    //        rectangle(image,detecciones_vector[i],CV_RGB(255,0,0));
-
     addDetections(image);
 
     return image;
 }
 
-void HULKINIZER::addDetections(Mat &im)
+void Hulkinizer::addDetections(Mat &im)
 {
 
-    for (int i=0;i<vector_detecciones.size();i++)
-        rectangle(im,vector_detecciones[i],CV_RGB(255,0,0));
+    for (int i=0;i<_detectionVector.size();i++)
+        rectangle(im,_detectionVector[i],CV_RGB(255,0,0));
 }
 
-float HULKINIZER::CLASSIFY_SVM(Mat image)
+float Hulkinizer::classifySVM(Mat image)
 {
-    float ret_val = 0;
-    for (int i=0;i<vector_detecciones.size();i++)
+    float returnedValue = 0;
+    for (int i=0;i<_detectionVector.size();i++)
     {
-      doStuffWithImage(image(vector_detecciones[i]));
+      doStuffWithImage(image(_detectionVector[i]));
       /*fake score*/
       RNG rng;
-      ret_val = (float) rng.gaussian(0.05)+0.5;
+      returnedValue = (float) rng.gaussian(0.05)+0.5;
     }
-    return ret_val;
+    return returnedValue;
 }
 

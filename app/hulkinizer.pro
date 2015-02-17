@@ -10,7 +10,6 @@ LIBS += -L$${PWD}/../build -lhulkinizer
 QMAKE_RPATHDIR += $${PWD}/../build
 DEPENDPATH += $${PWD}/../lib
 
-
 OPENCV_ROOT = $$(OPENCV_PATH)
 isEmpty(OPENCV_ROOT){
   error( You must set OPENCV_PATH variable to your opencv location)

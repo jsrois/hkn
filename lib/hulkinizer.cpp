@@ -11,7 +11,7 @@ Hulkinizer::Hulkinizer(int doFaceDetection)
     this->_doFaceDetection = doFaceDetection;
     if (doFaceDetection == 1)
     {
-    _classifier = new CascadeClassifier("data/haarcascade_frontalface_alt2.xml");
+        _classifier = new CascadeClassifier("data/haarcascade_frontalface_alt2.xml");
     }
     else
     {
@@ -27,6 +27,34 @@ Hulkinizer::~Hulkinizer()
 
 Mat Hulkinizer::run(Mat image, int featureType)
 {
+    runDetection(image);
+
+    Mat processedImage;
+
+    if (featureType == Hulk)
+    {
+        hulkFeatureExtraction(image,processedImage);
+    }
+    else if (featureType == DrManhattan)
+    {
+        manhattanFeatureExtraction(image,processedImage);
+    }
+    else if (featureType == HellBoy)
+    {
+        hellboyFeatureExtraction(image,processedImage);
+    }
+    else if (featureType == XYZfeatures)
+    {
+        xyzFeatureExtraction(image,processedImage);
+
+    }
+    addDetections(processedImage );
+
+    return processedImage;
+}
+
+void Hulkinizer::runDetection(const Mat &image)
+{
     if (_doFaceDetection == 1)
     {
         Size minimumSize = Size(30,30);
@@ -39,59 +67,56 @@ Mat Hulkinizer::run(Mat image, int featureType)
         Size maximumSize = Size(200,200);
         _classifier->detectMultiScale(image,_detectionVector,1.1, 3, CV_HAAR_FIND_BIGGEST_OBJECT, minimumSize, maximumSize);
     }
+}
 
-    if (featureType == Hulk)
+void Hulkinizer::hulkFeatureExtraction(const Mat &input, Mat &output)
+{
+    vector<Mat> imageChannels;
+    split(input,imageChannels);
+    for (int i=0;i<_detectionVector.size();i++)
     {
-        vector<Mat> imageChannels;
-        split(image,imageChannels);
-        for (int i=0;i<_detectionVector.size();i++)
-        {
-            Mat face = imageChannels[1](_detectionVector[i]);
-            face = 2*face;
-        }
-        merge(imageChannels,image);
-
+        Mat face = imageChannels[1](_detectionVector[i]);
+        face = 2*face;
     }
-    else if (featureType == DrManhattan)
+    merge(imageChannels,output);
+}
+
+void Hulkinizer::hellboyFeatureExtraction(const Mat &input, Mat &output)
+{
+    vector<Mat> imageChannels;
+    split(input,imageChannels);
+    for (int i=0;i<_detectionVector.size();i++)
     {
-        vector<Mat> imageChannels;
-        split(image,imageChannels);
-        for (int i=0;i<_detectionVector.size();i++)
-        {
-            Mat face = imageChannels[0](_detectionVector[i]);
-            face = 2*face;
-        }
-        merge(imageChannels,image);
-
+        Mat face = imageChannels[2](_detectionVector[i]);
+        face = 2*face;
     }
-    else if (featureType == HellBoy)
+    merge(imageChannels,output);
+}
+
+void Hulkinizer::manhattanFeatureExtraction(const Mat &input, Mat &output)
+{
+    vector<Mat> imageChannels;
+    split(input,imageChannels);
+    for (int i=0;i<_detectionVector.size();i++)
     {
-        vector<Mat> imageChannels;
-        split(image,imageChannels);
-        for (int i=0;i<_detectionVector.size();i++)
-        {
-            Mat face = imageChannels[2](_detectionVector[i]);
-            face = 2*face;
-        }
-        merge(imageChannels,image);
-
+        Mat face = imageChannels[0](_detectionVector[i]);
+        face = 2*face;
     }
-    else if (featureType == XYZfeatures)
+    merge(imageChannels,output);
+}
+
+void Hulkinizer::xyzFeatureExtraction(const Mat &input, Mat &output)
+{
+    output = input.clone();
+    Mat hsvImage;
+    cvtColor(input,hsvImage,CV_BGR2HSV);
+    for (int i=0;i<_detectionVector.size();i++)
     {
-        Mat hsvImage;
-        cvtColor(image,hsvImage,CV_BGR2HSV);
-        for (int i=0;i<_detectionVector.size();i++)
-        {
-            image(_detectionVector[i]) = 1.0*hsvImage(_detectionVector[i]);
+        output(_detectionVector[i]) = 1.0*hsvImage(_detectionVector[i]);
 
-            if (this->classifySVM(image(_detectionVector[i]))<THRESHOLD)
-                MySQLDatabase::addImageToDatabase(image);
-        }
-
+        if (this->classifySVM(output(_detectionVector[i]))<THRESHOLD)
+            MySQLDatabase::addImageToDatabase(output);
     }
-    addDetections(image);
-
-    return image;
 }
 
 void Hulkinizer::addDetections(Mat &im)

@@ -10,6 +10,11 @@ class Hulkinizer
     std::vector<Rect> _detectionVector;
     int _doFaceDetection;/*1 = Face detection, 0 = H&S detection */
 protected:
+    void runDetection(const Mat &image);
+    void hulkFeatureExtraction(const Mat& input, Mat& output);
+    void hellboyFeatureExtraction(const Mat& input, Mat& output);
+    void manhattanFeatureExtraction(const Mat& input, Mat& output);
+    void xyzFeatureExtraction(const Mat& input, Mat& output);
     void addDetections(Mat& im);
 public:
 

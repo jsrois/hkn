@@ -2,7 +2,9 @@
 #define HULKINIZER_H
 #include <opencv2/opencv.hpp>
 #include <string>
+#include <vector>
 using namespace cv;
+using namespace std;
 
 class Detector
 {
@@ -24,13 +26,14 @@ public:
     static FeatureExtractor * create(int);
 
     // pure virtual methods
-    virtual void run(const Mat&, Mat) = 0;
+    virtual void run(const Mat & input, vector<Rect> roiVector , Mat& output) = 0;
 };
 
 
 class Hulkinizer
 {
-    Detector * _detector;
+    Detector *               _detector;
+    FeatureExtractor*  _featExtraction;
     std::vector<Rect> _detectionVector;
 
 protected:
@@ -43,9 +46,9 @@ public:
 
     enum {Hulk = 0, DrManhattan = 1, HellBoy = 2, XYZfeatures = 3};
 
-    Hulkinizer(int detectorType = Detector::faceDetector);
+    Hulkinizer(int detectorType = Detector::faceDetector, int featureType = Hulk);
     ~Hulkinizer();
-    Mat run(Mat image, int featureType=Hulk);
+    Mat run(Mat image);
     float classifySVM(Mat image);
 };
 

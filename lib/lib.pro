@@ -27,4 +27,5 @@ SOURCES += \
     hulkinizer.cpp \
     face_detector.cpp \
     detectors_factory.cpp \
-    head_and_shoulder_detector.cpp
+    head_and_shoulder_detector.cpp \
+    feature_extractor_factory.cpp

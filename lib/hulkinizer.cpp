@@ -6,10 +6,12 @@ using namespace std;
 
 #define THRESHOLD 0.5
 
-Hulkinizer::Hulkinizer(int detectorType)
+Hulkinizer::Hulkinizer(int detectorType, int featureType)
 {
     _detector = Detector::create(detectorType);
     _detector->init();
+
+    _featExtraction = FeatureExtractor::create(featureType);
 }
 
 Hulkinizer::~Hulkinizer()
@@ -17,30 +19,17 @@ Hulkinizer::~Hulkinizer()
 
 }
 
-Mat Hulkinizer::run(Mat image, int featureType)
+Mat Hulkinizer::run(Mat image)
 {
     _detector->run(image,_detectionVector);
 
     Mat processedImage;
 
-    if (featureType == Hulk)
-    {
-        hulkFeatureExtraction(image,processedImage);
-    }
-    else if (featureType == DrManhattan)
-    {
-        manhattanFeatureExtraction(image,processedImage);
-    }
-    else if (featureType == HellBoy)
-    {
-        hellboyFeatureExtraction(image,processedImage);
-    }
-    else if (featureType == XYZfeatures)
-    {
-        xyzFeatureExtraction(image,processedImage);
+    _featExtraction->run(image,_detectionVector,processedImage);
 
-    }
-    addDetections(processedImage );
+    classifySVM(processedImage);
+
+    addDetections(processedImage);
 
     return processedImage;
 }

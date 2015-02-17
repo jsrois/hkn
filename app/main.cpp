@@ -10,7 +10,7 @@ int main()
 {
     VideoCapture c1("data/trellis.avi");
 
-    Hulkinizer myHulk(0);
+    Hulkinizer myHulk;
 
 
 
@@ -21,7 +21,7 @@ int main()
         c1 >> myImage;
         if (myImage.empty()) break;
 
-        Mat result = myHulk.run(myImage,Hulkinizer::Hulk);
+        Mat result = myHulk.run(myImage);
 
         if (myHulk.classifySVM(result)<0.5)
             putText(result,"Male",Point(20,20),1,1.0,CV_RGB(255,255,255));

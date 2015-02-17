@@ -12,7 +12,11 @@ LIBS += -lopencv_core -lopencv_imgproc -lopencv_highgui -lopencv_objdetect
 
 message (Using OpenCV library in $${OPENCV_ROOT})
 
-SOURCES += main.cpp
+SOURCES += main.cpp \
+    hulkinizer.cpp
+
+HEADERS += \
+    hulkinizer.h
 
 
 

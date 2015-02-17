@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/jsrois/hkn_refactoring.svg?branch=master)](https://travis-ci.org/jsrois/hkn_refactoring)
+[![Build Status](https://travis-ci.org/jsrois/hkn.svg?branch=master)](https://travis-ci.org/jsrois/hkn)
 
 # hkn_refactoring
 

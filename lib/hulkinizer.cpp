@@ -2,6 +2,7 @@
 #include <iostream>
 #include "nulldefs.h"
 #include "mysqldatabase.hpp"
+#include "delegates.h"
 using namespace std;
 
 #define THRESHOLD 0.5

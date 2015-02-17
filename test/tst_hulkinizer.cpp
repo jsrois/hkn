@@ -50,7 +50,7 @@ void hulkinizer_test::characterizationTest()
     Mat inputImage          = imread(inputImageName.toStdString().c_str());
     Mat groundTruthImage    = imread(groundTruthImageName.toStdString().c_str());
 
-    Hulkinizer hulk(Detector::faceDetector,featureType);
+    Hulkinizer hulk(Hulkinizer::faceDetector,featureType);
 
     Mat result = hulk.run(inputImage);
 

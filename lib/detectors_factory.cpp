@@ -1,4 +1,5 @@
 #include "hulkinizer.h"
+#include "delegates.h"
 #include "face_detector.h"
 #include "head_and_shoulder_detector.h"
 
@@ -9,11 +10,11 @@ Detector * Detector::create(int detectorType)
 {
     switch (detectorType)
     {
-    case faceDetector:
+    case Hulkinizer::faceDetector:
     {
         return new FaceDetector;
     }
-    case headAndShoulderDetector:
+    case Hulkinizer::headAndShoulderDetector:
     {
         return new HeadAndShoulderDetector;
     }

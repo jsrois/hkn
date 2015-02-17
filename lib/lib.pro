@@ -21,7 +21,8 @@ HEADERS += \
     mysqldatabase.hpp \
     nulldefs.h \
     face_detector.h \
-    head_and_shoulder_detector.h
+    head_and_shoulder_detector.h \
+    delegates.h
 
 SOURCES += \
     hulkinizer.cpp \

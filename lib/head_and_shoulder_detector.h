@@ -1,6 +1,7 @@
 #ifndef HEADANDSHOULDERDETECTOR_H
 #define HEADANDSHOULDERDETECTOR_H
 #include "hulkinizer.h"
+#include "delegates.h"
 
 
 class HeadAndShoulderDetector : public hulkinizer::Detector

@@ -1,4 +1,5 @@
 #include "hulkinizer.h"
+#include "delegates.h"
 
 class HulkExtractor : public hulkinizer::FeatureExtractor
 {

@@ -11,3 +11,4 @@ script:
   - export OPENCV_PATH=/usr/local
   - qmake -r hulkinizer_all.pro
   - make
+  - make test
